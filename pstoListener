@@ -1,0 +1,11 @@
+$sql = "SELECT @@SERVERNAME"
+$cn = New-Object System.Data.SqlClient.SqlConnection
+$cn.ConnectionString = "Server=tcp:mylistener,1433;Database=MyDB;Integrated Security=SSPI;MultiSubnetFailover=True"
+$cn.Open()
+$cmd = $cn.CreateCommand()
+$cmd.CommandText = $sql
+$result = $cmd.ExecuteScalar()
+Write-Output $result
+$cn.Close()
+
+powershell -ExecutionPolicy Bypass -File "C:\Path\To\Script.ps1"
