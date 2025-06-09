@@ -1,0 +1,10 @@
+@echo off
+set DSN_NAME=MyDSN
+set DESCRIPTION=My SQL Server DSN
+set SERVER=my-sql-listener.company.com
+set DRIVER=ODBC Driver 17 for SQL Server
+
+odbcconf.exe /a {CONFIGSYSDSN "Driver=%DRIVER%" "DSN=%DSN_NAME%|Description=%DESCRIPTION%|Server=%SERVER%|Trusted_Connection=Yes|MultiSubnetFailover=Yes"}
+
+--powershell confirmation
+Get-OdbcDsn -DsnType System | Where-Object Name -eq "MyDSN"
