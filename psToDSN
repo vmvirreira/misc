@@ -8,3 +8,6 @@ odbcconf.exe /a {CONFIGSYSDSN "Driver=%DRIVER%" "DSN=%DSN_NAME%|Description=%DES
 
 --powershell confirmation
 Get-OdbcDsn -DsnType System | Where-Object Name -eq "MyDSN"
+
+--powershell get dsns
+Get-OdbcDriver | Select Name
