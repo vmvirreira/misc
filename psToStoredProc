@@ -1,0 +1,29 @@
+param (
+    [string]$Server = "tcp:my-listener.domain.com,1433",
+    [string]$Database = "MyDatabase",
+    [string]$ProcName = "dbo.MyStoredProcedure"
+)
+
+# Define connection string (with MultiSubnetFailover support)
+$connectionString = "Server=$Server;Database=$Database;Integrated Security=SSPI;MultiSubnetFailover=True"
+
+# Create SQL connection
+$connection = New-Object System.Data.SqlClient.SqlConnection
+$connection.ConnectionString = $connectionString
+$connection.Open()
+
+# Create SQL command
+$command = $connection.CreateCommand()
+$command.CommandType = [System.Data.CommandType]::StoredProcedure
+$command.CommandText = $ProcName
+
+# Optional: add parameters if needed
+# $command.Parameters.Add((New-Object Data.SqlClient.SqlParameter("@ParamName", "Value")))
+
+# Execute the stored procedure
+$command.ExecuteNonQuery()
+
+# Cleanup
+$connection.Close()
+
+Write-Host "Stored procedure [$ProcName] executed successfully."
