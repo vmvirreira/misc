@@ -11,3 +11,5 @@ Get-OdbcDsn -DsnType System | Where-Object Name -eq "MyDSN"
 
 --powershell get dsns
 Get-OdbcDriver | Select Name
+
+https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server?view=sql-server-ver17
