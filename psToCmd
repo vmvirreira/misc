@@ -1,0 +1,30 @@
+# Define connection variables
+$ServerInstance = "YourSqlServer\Instance"
+$DatabaseName   = "YourDatabase"
+$UserName       = "your_sql_user"    # Omit if using Integrated Security
+$Password       = "your_password"    # Omit if using Integrated Security
+
+# Define your SQL statement inside a transaction
+$SqlQuery = @"
+BEGIN TRANSACTION T1;
+
+    -- Your long multi-line SQL goes here
+    UPDATE dbo.MyTable
+    SET SomeColumn = 'NewValue'
+    WHERE Id IN (SELECT TOP 10 Id FROM dbo.MyTable ORDER BY CreatedDate);
+
+    INSERT INTO dbo.AuditTable (Action, PerformedBy, PerformedOn)
+    VALUES ('BulkUpdate', SYSTEM_USER, GETDATE());
+
+COMMIT TRANSACTION T1;
+"@
+
+# Execute the SQL
+Invoke-Sqlcmd `
+    -ServerInstance $ServerInstance `
+    -Database $DatabaseName `
+    -Username $UserName `
+    -Password $Password `
+    -Query $SqlQuery `
+    -QueryTimeout 600 `
+    -Verbose
